@@ -20,6 +20,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+      - name: Validate game files
+        run: |
+          test -f index.html
+          test -f styles.css
+          test -f app.js
+          node --check app.js
+          grep -q 'href="styles.css"' index.html
+          grep -q 'src="app.js"' index.html
       - name: Prepare static site
         run: |
           mkdir -p dist
