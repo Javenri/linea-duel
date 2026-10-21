@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1020">
+  <meta name="description" content="LINEA DUEL — crea tu combatiente, distribuye tus monedas y lucha.">
+  <title>LINEA DUEL — Forja tu leyenda</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="LINEA DUEL inicio"><span class="brand-mark">LD</span><span>LINEA <b>DUEL</b></span></a>
+      <div class="topbar-right"><span class="online-dot"></span><span>PROTOCOLO DE COMBATE</span><span class="version">ALPHA 0.1</span></div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow"><span></span> TU LEYENDA COMIENZA AQUÍ</p>
+          <h1>Forja tu estilo.<br><em>Domina la arena.</em></h1>
+          <p class="hero-description">Elige tu clase, combina tus habilidades y reparte tus recursos. Cada moneda puede cambiar el resultado del duelo.</p>
+          <div class="hero-stats"><div><strong>05</strong><span>CLASES</span></div><div><strong>06</strong><span>ATRIBUTOS</span></div><div><strong>100</strong><span>MONEDAS</span></div></div>
+        </div>
+        <div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="hero-core"><span>⚔</span></div><div class="art-label art-label-top">COMBAT SYSTEM <b>ONLINE</b></div><div class="art-label art-label-bottom">BUILD YOUR DESTINY <span>◆</span></div></div>
+      </section>
+
+      <div class="section-heading"><div><p class="eyebrow">FASE 01 / CONFIGURACIÓN</p><h2>Construye tu combatiente</h2></div><p class="section-note">Tu combinación define tu forma de luchar.</p></div>
+
+      <section class="builder-grid">
+        <div class="panel class-panel">
+          <div class="panel-heading"><span class="step-number">01</span><div><h3>Clase principal</h3><p>Escoge tu rol en el campo de batalla.</p></div></div>
+          <div id="classGrid" class="class-grid">
+            <button class="class-card selected" data-class="Mago"><span class="class-icon">✧</span><strong>Mago</strong><small>Control · Energía</small></button>
+            <button class="class-card" data-class="Ataque"><span class="class-icon">⚔</span><strong>Ataque</strong><small>Daño · Presión</small></button>
+            <button class="class-card" data-class="Defensa"><span class="class-icon">⬡</span><strong>Defensa</strong><small>Resistencia · Bloqueo</small></button>
+            <button class="class-card" data-class="Explorador"><span class="class-icon">➶</span><strong>Explorador</strong><small>Agilidad · Precisión</small></button>
+            <button class="class-card" data-class="Tecnología"><span class="class-icon">⌘</span><strong>Tecnología</strong><small>Ingenio · Táctica</small></button>
+          </div>
+          <div class="choice-row">
+            <label for="specialty">Especialidad</label>
+            <select id="specialty"><option>Combate</option><option>Curación</option><option>Apoyo</option><option>Aéreo</option><option>Tierra</option><option>Sigilo</option></select>
+          </div>
+          <div class="choice-row">
+            <label for="affinity">Afinidad / tipo</label>
+            <select id="affinity"><option>Fuego</option><option>Agua</option><option>Tierra</option><option>Bombardero</option><option>Francotirador</option></select>
+          </div>
+          <div class="passive-box"><span class="passive-icon">✦</span><div><small>PASIVA DE CLASE</small><strong id="passiveTitle">Núcleo arcano</strong><p id="passiveText">Tu energía potencia las habilidades especiales.</p></div></div>
+        </div>
+
+        <div class="panel stats-panel">
+          <div class="panel-heading"><span class="step-number">02</span><div><h3>Distribuye tus monedas</h3><p>Personaliza tus puntos fuertes y débiles.</p></div></div>
+          <div class="coin-summary"><div><span>MONEDAS DISPONIBLES</span><strong><b id="remainingCoins">0</b><small> / 100</small></strong></div><div class="coin-icon">◈</div></div>
+          <div class="progress-track"><span id="coinProgress"></span></div>
+          <div id="statsList" class="stats-list"></div>
+          <div class="stats-footer"><span id="allocationMessage">Distribución completa.</span><button id="resetStats" class="text-button" type="button">↺ Reiniciar</button></div>
+          <button id="startBattle" class="primary-button" type="button">ENTRAR A LA ARENA <span>↗</span></button>
+        </div>
+      </section>
+
+      <section id="battleSection" class="battle-section hidden">
+        <div class="section-heading"><div><p class="eyebrow">FASE 03 / ENFRENTAMIENTO</p><h2>La arena te espera</h2></div><button id="newBuild" class="secondary-button" type="button">← Editar combatiente</button></div>
+        <div class="arena">
+          <div class="fighter fighter-player"><div class="fighter-emblem" id="playerEmblem">✧</div><p class="fighter-label">TU COMBATIENTE</p><h3 id="playerName">Mago</h3><p class="fighter-build" id="playerBuild">Combate · Fuego</p><div class="health-label"><span>VIDA</span><b id="playerHpText">100 / 100</b></div><div class="health-track"><span id="playerHpBar"></span></div><div class="energy-label"><span>ENERGÍA</span><b id="energyText">30 / 30</b></div><div class="energy-track"><span id="energyBar"></span></div></div>
+          <div class="versus">VS<span>⚡</span></div>
+          <div class="fighter fighter-enemy"><div class="fighter-emblem enemy-emblem">☠</div><p class="fighter-label">OPONENTE IA</p><h3 id="enemyName">Centinela</h3><p class="fighter-build">Unidad de entrenamiento</p><div class="health-label"><span>VIDA</span><b id="enemyHpText">100 / 100</b></div><div class="health-track"><span id="enemyHpBar"></span></div><div class="enemy-status" id="enemyStatus">Esperando primer movimiento...</div></div>
+        </div>
+        <div class="combat-controls"><div><p class="eyebrow">SELECCIONA TU MOVIMIENTO</p><h3>¿Cuál es tu estrategia?</h3></div><div class="action-buttons"><button class="action-button" data-action="attack"><span>⚔</span><b>Ataque básico</b><small>Sin coste</small></button><button class="action-button special-action" data-action="special"><span>✦</span><b>Habilidad especial</b><small>10 de energía</small></button><button class="action-button" data-action="guard"><span>⬡</span><b>Defender</b><small>Reduce el daño</small></button></div></div>
+        <div class="log-panel"><div class="log-heading"><span class="online-dot"></span> REGISTRO DE COMBATE</div><div id="battleLog" aria-live="polite"><p>La arena está lista. Elige tu primer movimiento.</p></div></div>
+        <div id="resultBanner" class="result-banner hidden"></div>
+      </section>
+      <footer><span>LINEA DUEL <b>© 2026</b></span><span>HECHO PARA QUIENES LUCHAN DIFERENTE.</span></footer>
+    </main>
+  </div>
+</body>
+</html>
