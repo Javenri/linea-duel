@@ -11,11 +11,11 @@
     { key: "energy", label: "Energía", desc: "Poder especial", icon: "ϟ", base: 15 }
   ];
   const classes = {
-    Mago: { icon: "✧", passive: "Núcleo arcano", text: "Tu energía potencia las habilidades especiales.", bonus: "energy" },
-    Ataque: { icon: "⚔", passive: "Instinto ofensivo", text: "Tus golpes básicos infligen daño adicional.", bonus: "attack" },
-    Defensa: { icon: "⬡", passive: "Bastión", text: "Tu armadura reduce parte del daño recibido.", bonus: "defense" },
-    Explorador: { icon: "➶", passive: "Paso ligero", text: "Tu agilidad aumenta la probabilidad de esquivar.", bonus: "agility" },
-    Tecnología: { icon: "⌘", passive: "Sobrecarga táctica", text: "Tus habilidades especiales consumen menos energía.", bonus: "tech" }
+    Mago: { icon: "🧙‍♂️", passive: "Núcleo arcano", text: "Tu energía potencia las habilidades especiales.", bonus: "energy" },
+    Ataque: { icon: "🗡️", passive: "Instinto ofensivo", text: "Tus golpes básicos infligen daño adicional.", bonus: "attack" },
+    Defensa: { icon: "🛡️", passive: "Bastión", text: "Tu armadura reduce parte del daño recibido.", bonus: "defense" },
+    Explorador: { icon: "🏹", passive: "Paso ligero", text: "Tu agilidad aumenta la probabilidad de esquivar.", bonus: "agility" },
+    Tecnología: { icon: "🤖", passive: "Sobrecarga táctica", text: "Tus habilidades especiales consumen menos energía.", bonus: "tech" }
   };
   const defaults = { attack: 20, defense: 20, agility: 15, vitality: 20, luck: 10, energy: 15 };
   let stats = { ...defaults };
@@ -80,6 +80,15 @@
     $("#battleLog").prepend(line);
   }
 
+  function animateFighter(selector, effect) {
+    const fighter = $(selector);
+    if (!fighter) return;
+    fighter.classList.remove("is-attacking", "is-special", "is-guarding", "is-hit", "is-dodging", "is-healing");
+    void fighter.offsetWidth;
+    fighter.classList.add(effect);
+    window.setTimeout(() => fighter.classList.remove(effect), 820);
+  }
+
   function updateBars() {
     $("#playerHpText").textContent = `${Math.max(0, playerHp)} / ${maxPlayerHp}`;
     $("#playerHpBar").style.width = Math.max(0, playerHp / maxPlayerHp * 100) + "%";
@@ -117,7 +126,7 @@
       if (dodged) {
         damage = 0;
         log("¡Paso ligero! Esquivas el ataque enemigo.");
-      } else log(`El oponente responde y te inflige ${damage} de daño.`);
+      } else { animateFighter(".fighter-player", "is-hit"); log(`El oponente responde y te inflige ${damage} de daño.`); }
     }
     playerHp = Math.max(0, playerHp - damage);
     energy = Math.min(maxEnergy, energy + 3);
