@@ -4,3 +4,27 @@
 @media(max-width:850px){.app-shell{padding:0 20px}.hero{grid-template-columns:1fr .65fr;min-height:340px}.hero-art{transform:scale(.85)}.builder-grid{grid-template-columns:1fr}.class-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.class-card{padding:10px 8px}.class-card small{line-height:1.4}.combat-controls{align-items:flex-start;flex-direction:column}.action-buttons{width:100%}.action-button{flex:1;min-width:0}.arena{grid-template-columns:1fr 45px 1fr;padding:18px 12px;gap:8px}.fighter{padding:13px}.fighter h3{font-size:23px}}
 @media(max-width:580px){.app-shell{padding:0 14px}.topbar{height:65px}.topbar-right{font-size:8px;letter-spacing:.5px}.version{display:none}.hero{display:block;padding:44px 0 25px}.hero h1{font-size:62px}.hero-description{font-size:12px}.hero-art{height:200px;transform:none;margin-top:10px}.orbit-one{width:240px;height:120px}.orbit-two{width:185px;height:205px}.hero-core{width:105px;height:105px}.hero-core span{font-size:45px}.art-label-top{top:10px;right:0}.art-label-bottom{bottom:9px;left:0}.section-heading{align-items:flex-start;flex-direction:column;margin-top:29px}.section-heading h2{font-size:30px}.section-note{margin:0}.panel{padding:17px}.class-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.class-card{min-height:88px}.class-card:last-child{grid-column:span 2}.choice-row select{width:62%}.arena{grid-template-columns:1fr;gap:13px;padding:14px}.versus{font-size:20px}.versus span{display:inline;margin-left:8px}.fighter{padding:17px}.fighter-emblem{height:45px;width:45px;font-size:24px;margin-bottom:12px}.fighter h3{font-size:26px}.action-buttons{display:grid;grid-template-columns:1fr;gap:8px}.action-button{display:grid;grid-template-columns:28px 1fr auto;align-items:center;gap:8px}.action-button span{grid-row:span 2}.action-button small{grid-column:2/4}.combat-controls{gap:14px}.section-heading:has(.secondary-button){flex-direction:row;align-items:center}.secondary-button{padding:10px;font-size:9px}footer{flex-direction:column;gap:10px}footer span:last-child{text-align:left}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+/* Character motion and combat feedback */
+.fighter{position:relative;overflow:hidden;transition:border-color .2s,background .2s}
+.fighter-emblem{width:88px;height:88px;margin:0 auto 17px;border-radius:22px;clip-path:none;font-size:51px;display:grid;place-items:center;position:relative;isolation:isolate;filter:drop-shadow(0 0 12px #5ee7f538);animation:characterIdle 2.8s ease-in-out infinite;transition:filter .2s,transform .2s}
+.fighter-player .fighter-emblem{background:radial-gradient(circle at 50% 30%,#365a78,#14223c 72%);box-shadow:inset 0 0 0 1px #5ee7f555}
+.fighter-enemy .fighter-emblem{background:radial-gradient(circle at 50% 30%,#784039,#291724 72%);box-shadow:inset 0 0 0 1px #ffad6655}
+.fighter:after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;background:linear-gradient(110deg,transparent 25%,#fff8 50%,transparent 75%);transform:translateX(-120%)}
+.fighter.is-attacking .fighter-emblem{animation:characterAttack .48s cubic-bezier(.2,.8,.25,1) both}
+.fighter.is-special .fighter-emblem{animation:characterSpecial .72s ease-out both;filter:drop-shadow(0 0 19px #a78bfa)}
+.fighter.is-guarding .fighter-emblem{animation:characterGuard .65s ease-in-out both;filter:drop-shadow(0 0 17px #5ee7f5)}
+.fighter.is-hit{animation:characterHit .42s ease-out both;border-color:#ff788c}
+.fighter.is-hit:after{opacity:1;animation:impactFlash .35s ease-out both}
+.fighter.is-dodging .fighter-emblem{animation:characterDodge .5s ease-in-out both}
+.fighter.is-healing .fighter-emblem{animation:characterHeal .75s ease-out both;filter:drop-shadow(0 0 20px #7cf2bd)}
+@keyframes characterIdle{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-5px) rotate(-1deg)}}
+@keyframes characterAttack{0%{transform:translateX(0) rotate(0) scale(1)}38%{transform:translateX(23px) rotate(-12deg) scale(1.12)}70%{transform:translateX(12px) rotate(6deg) scale(1.04)}100%{transform:translateX(0) rotate(0) scale(1)}}
+@keyframes characterSpecial{0%{transform:scale(1);filter:brightness(1)}35%{transform:scale(1.22) rotate(-8deg);filter:brightness(1.8) drop-shadow(0 0 24px #a78bfa)}70%{transform:scale(.94) rotate(5deg)}100%{transform:scale(1);filter:brightness(1)}}
+@keyframes characterGuard{0%,100%{transform:translateY(0) scale(1)}35%{transform:translateY(5px) scale(.9,1.08)}65%{transform:translateY(2px) scale(1.04,.98)}}
+@keyframes characterHit{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}45%{transform:translateX(8px)}70%{transform:translateX(-4px)}}
+@keyframes characterDodge{0%,100%{transform:translateX(0);opacity:1}45%{transform:translateX(-28px) rotate(-10deg);opacity:.55}70%{transform:translateX(9px) rotate(4deg);opacity:1}}
+@keyframes characterHeal{0%{transform:scale(1)}35%{transform:scale(1.15);filter:drop-shadow(0 0 25px #7cf2bd)}100%{transform:scale(1)}}
+@keyframes impactFlash{0%{transform:translateX(-120%);opacity:0}25%{opacity:1}100%{transform:translateX(120%);opacity:0}}
+@media(max-width:580px){.fighter-emblem{width:72px;height:72px;font-size:42px}}
+@media(prefers-reduced-motion:reduce){.fighter-emblem{animation:none!important}.fighter.is-attacking .fighter-emblem,.fighter.is-special .fighter-emblem,.fighter.is-guarding .fighter-emblem,.fighter.is-dodging .fighter-emblem,.fighter.is-healing .fighter-emblem{animation:none!important}}
